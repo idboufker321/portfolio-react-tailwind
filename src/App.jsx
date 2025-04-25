@@ -1,23 +1,35 @@
-// src/App.jsx
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Header from "@/components/ui/Header";
-import Home from "@/pages/Home"; // you’ll create these next
-import Projects from "@/pages/Projects";
-import Contact from "@/pages/Contact";
+import { useState } from "react";
+import "./App.css";
+import { LoadingScreen } from "./components/LoadingScreen";
+import { Navbar } from "./components/Navbar";
+import { MobileMenu } from "./components/MobileMenu";
+import { Home } from "./components/sections/Home";
+import { About } from "./components/sections/About";
+import { Projects } from "./components/sections/Projects";
+import "./index.css";
+import { Contact } from "./components/sections/Contact";
 
-export default function App() {
+function App() {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
-    <BrowserRouter>
-      <Header />
-      <main className="pt-24">
-        {" "}
-        {/* push content below fixed header */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/contact" element={<Contact />} />
-        </Routes>
-      </main>
-    </BrowserRouter>
+    <>
+      {!isLoaded && <LoadingScreen onComplete={() => setIsLoaded(true)} />}{" "}
+      <div
+        className={`min-h-screen transition-opacity duration-700 ${
+          isLoaded ? "opacity-100" : "opacity-0"
+        } bg-black text-gray-100`}
+      >
+        <Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+        <MobileMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+        <Home />
+        <About />
+        <Projects />
+        <Contact />
+      </div>
+    </>
   );
 }
+
+export default App;
