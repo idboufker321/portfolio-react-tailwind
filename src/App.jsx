@@ -1,33 +1,54 @@
-import { useState } from "react";
-import "./App.css";
-import { LoadingScreen } from "./components/LoadingScreen";
-import { Navbar } from "./components/Navbar";
-import { MobileMenu } from "./components/MobileMenu";
-import { Home } from "./components/sections/Home";
-import { About } from "./components/sections/About";
-import { Projects } from "./components/sections/Projects";
-import "./index.css";
-import { Contact } from "./components/sections/Contact";
+import { Routes, Route, Link } from "react-router-dom";
+import Home from "./Home";
+import Projects from "./Projects";
+import About from "./About";
+import Contact from "./Contact";
+import ProjectDetail from "./ProjectDetail";
+import MouseFlow from "./MouseFlow";
 
 function App() {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-
   return (
     <>
-      {!isLoaded && <LoadingScreen onComplete={() => setIsLoaded(true)} />}{" "}
-      <div
-        className={`min-h-screen transition-opacity duration-700 ${
-          isLoaded ? "opacity-100" : "opacity-0"
-        } bg-black text-gray-100`}
-      >
-        <Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-        <MobileMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-        <Home />
-        <About />
-        <Projects />
-        <Contact />
-      </div>
+      <MouseFlow />
+
+      <header className="bg-white shadow mb-4">
+        <nav className="container mx-auto flex space-x-4 p-4">
+          <Link
+            to="/"
+            className="px-3 py-2 rounded bg-gray-200 text-gray-800 hover:bg-blue-500 hover:text-white hover:shadow-lg transition"
+          >
+            Home
+          </Link>
+          <Link
+            to="/projects"
+            className="px-3 py-2 rounded bg-gray-200 text-gray-800 hover:bg-blue-500 hover:text-white hover:shadow-lg transition"
+          >
+            Projects
+          </Link>
+          <Link
+            to="/about"
+            className="px-3 py-2 rounded bg-gray-200 text-gray-800 hover:bg-blue-500 hover:text-white hover:shadow-lg transition"
+          >
+            About
+          </Link>
+          <Link
+            to="/contact"
+            className="px-3 py-2 rounded bg-gray-200 text-gray-800 hover:bg-blue-500 hover:text-white hover:shadow-lg transition"
+          >
+            Contact
+          </Link>
+        </nav>
+      </header>
+
+      <main className="container mx-auto p-4">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/projects/:id" element={<ProjectDetail />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
+      </main>
     </>
   );
 }
